@@ -1,6 +1,8 @@
 ﻿using Rubeus;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.IO;
 
 namespace SharpMapExec.Commands
@@ -70,7 +72,21 @@ namespace SharpMapExec.Commands
 
             if (arguments.ContainsKey("/computername"))
             {
-                if (File.Exists(arguments["/computername"]))
+                // match cidr notation
+                string cidr = @"/\d{1,3}$";
+                Regex r = new Regex(cidr, RegexOptions.IgnoreCase);
+                Match m = r.Match(arguments["/computername"]);
+                if (m.Success)
+                {
+                    IPNetwork ipn = IPNetwork.Parse(arguments["/computername"]);
+                    IPAddressCollection ips = IPNetwork.ListIPAddress(ipn);
+                    List<string> iplist = new List<string>();
+                    foreach (IPAddress ip in ips)
+                    {
+                        iplist.Add(ip.ToString());
+                    }
+                    computernames = iplist.ToArray();
+                } else if (File.Exists(arguments["/computername"]))
                 {
                     computernames = File.ReadAllLines(arguments["/computername"]);
                 }
