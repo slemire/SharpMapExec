@@ -1,5 +1,7 @@
 # SharpMapExec
 
+**Forked version with CIDR support for /computername parameter**
+
 A sharpen version of [CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec). This tool is made to simplify penetration testing of networks and to create a swiss army knife that is made for running on Windows which is often a requirement during insider threat simulation engagements.
 
 
